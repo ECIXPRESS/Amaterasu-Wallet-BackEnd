@@ -25,7 +25,7 @@
     - 7.6 🟩 [Diagrama de Base de Datos (MongoDB)](#76--diagrama-de-base-de-datos-mongodb)
     - 7.7 🛰️ [Diagrama de Despliegue](#77--diagrama-de-despliegue)
 8. 🌐 [Endpoints expuestos y su información de entrada y salida](#8--endpoints-expuestos-y-su-informacion-de-entrada-y-salida)
-9. ⚠️ [Manejo de Errores](#9--manejo-de-errores)
+9[.mvn](.mvn). ⚠️ [Manejo de Errores](#9--manejo-de-errores)
 10. 🧪 [Evidencia de las pruebas y cómo ejecutarlas](#10--evidencia-de-las-pruebas-y-como-ejecutarlas)
 11. 🗂️ [Código de la implementación organizado en las respectivas carpetas](#11--codigo-de-la-implementacion-organizado-en-las-respectivas-carpetas)
 12. 📝 [Código documentado](#12--codigo-documentado)
