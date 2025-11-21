@@ -152,7 +152,7 @@ class UseCaseTest {
         assertNotNull(response);
         assertEquals(walletId, response.getWalletId());
         assertEquals(clientId, response.getClientId());
-        assertEquals(100.0, response.getMoneyAmount());
+        assertEquals("100", response.getMoneyAmount());
         verify(walletRepository).findByClientId(clientId);
     }
 
@@ -178,7 +178,7 @@ class UseCaseTest {
         assertNotNull(response);
         assertEquals(walletId, response.getWalletId());
         assertEquals(clientId, response.getClientId());
-        assertEquals(100.0, response.getMoneyAmount());
+        assertEquals("100", response.getMoneyAmount());
         verify(walletRepository).findByWalletId(walletId);
     }
 
@@ -277,7 +277,7 @@ class UseCaseTest {
         WalletResponse response = new WalletResponse(walletId, clientId, 100.0, now, now);
         assertEquals(walletId, response.getWalletId());
         assertEquals(clientId, response.getClientId());
-        assertEquals(100.0, response.getMoneyAmount());
+        assertEquals("100", response.getMoneyAmount());
         assertEquals(now, response.getCreatedAt());
         assertEquals(now, response.getUpdatedAt());
     }

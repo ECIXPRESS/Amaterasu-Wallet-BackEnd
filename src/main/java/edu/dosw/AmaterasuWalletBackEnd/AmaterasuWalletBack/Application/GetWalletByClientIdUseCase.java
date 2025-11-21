@@ -18,7 +18,7 @@ public class GetWalletByClientIdUseCase implements UseCase<String, WalletRespons
     @Override
     public WalletResponse execute(String clientId) {
         Wallet wallet = walletRepository.findByClientId(clientId).orElseThrow(() -> new CustomExceptions.
-                        WalletNotFoundException("No se encontró billetera para el cliente: " + clientId));
+                WalletNotFoundException("No se encontró billetera para el cliente: " + clientId));
         return toWalletResponse(wallet);
     }
 
