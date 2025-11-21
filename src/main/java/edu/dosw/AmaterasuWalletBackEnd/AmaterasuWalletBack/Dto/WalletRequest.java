@@ -1,7 +1,11 @@
 package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class WalletRequest {
     private String clientId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "de")
     private Double amount;
 
     public WalletRequest() {}

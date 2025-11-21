@@ -92,6 +92,7 @@
                         <exclude>**/Config/*</exclude>
                         <exclude>**/Persistence/**</exclude>
                         <exclude>**/AmaterasuWalletBackApplication.class</exclude>
+                        <exclude>**/Exception/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>

@@ -12,7 +12,7 @@ public class WalletTest {
         Wallet wallet = new Wallet("123", "tomas", 100.0);
         assertEquals("123", wallet.getWalletId());
         assertEquals("tomas", wallet.getClientId());
-        assertEquals(100.0, wallet.getMoneyAmount());
+        assertEquals(100.0, wallet.getBigDecimal());
         assertNotNull(wallet.getCreatedAt());
         assertNotNull(wallet.getUpdatedAt());
     }
@@ -20,7 +20,7 @@ public class WalletTest {
     @Test
     void createWallet_withZeroInitialAmount_allowed() {
         Wallet wallet = Wallet.createWallet("david", 0.0);
-        assertEquals(0.0, wallet.getMoneyAmount());
+        assertEquals(0.0, wallet.getBigDecimal());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class WalletTest {
         LocalDateTime before = wallet.getUpdatedAt();
         Thread.sleep(5);
         wallet.addMoney(25.000);
-        assertEquals(75.000, wallet.getMoneyAmount());
+        assertEquals(75.000, wallet.getBigDecimal());
         assertTrue(wallet.getUpdatedAt().isAfter(before));
     }
 
@@ -56,7 +56,7 @@ public class WalletTest {
         LocalDateTime before = wallet.getUpdatedAt();
         Thread.sleep(5);
         wallet.withdrawMoney(40.000);
-        assertEquals(60.000, wallet.getMoneyAmount());
+        assertEquals(60.000, wallet.getBigDecimal());
         assertTrue(wallet.getUpdatedAt().isAfter(before));
     }
 

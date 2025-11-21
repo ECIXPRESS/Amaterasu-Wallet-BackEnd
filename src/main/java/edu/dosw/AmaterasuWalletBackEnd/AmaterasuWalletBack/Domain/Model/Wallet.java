@@ -1,28 +1,35 @@
 package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Domain.Model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
+@Document(collection = "wallets")
 public class Wallet {
+
+    @Id
     private String walletId;
     private String clientId;
-    private Double moneyAmount;
+    private Double BigDecimal;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Wallet(String walletId, String clientId, Double moneyAmount) {
+
+    public Wallet(String walletId, String clientId, Double BigDecimal) {
         this.walletId = walletId;
         this.clientId = clientId;
-        this.moneyAmount = moneyAmount;
+        this.BigDecimal = BigDecimal;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         validate();
     }
 
-    public Wallet(String walletId, String clientId, Double moneyAmount,
+    public Wallet(String walletId, String clientId, Double BigDecimal,
                   LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.walletId = walletId;
         this.clientId = clientId;
-        this.moneyAmount = moneyAmount;
+        this.BigDecimal = BigDecimal;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         validate();
@@ -32,16 +39,16 @@ public class Wallet {
         if (amount <= 0) {
             throw new IllegalArgumentException("El monto a agregar debe ser positivo");
         }
-        this.moneyAmount += amount;
+        this.BigDecimal += amount;
         this.updatedAt = LocalDateTime.now();
     }
 
     public void withdrawMoney(Double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("El monto a retirar debe ser positivo");}
-        if (amount > this.moneyAmount) {
+        if (amount > this.BigDecimal) {
             throw new IllegalStateException("Fondos insuficientes en la billetera");}
-        this.moneyAmount -= amount;
+        this.BigDecimal -= amount;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -60,14 +67,14 @@ public class Wallet {
         if (clientId == null || clientId.trim().isEmpty()) {
             throw new IllegalArgumentException("ClientId es requerido");
         }
-        if (moneyAmount < 0) {
+        if (BigDecimal < 0) {
             throw new IllegalArgumentException("El monto no puede ser negativo");
         }
     }
 
     public String getWalletId() { return walletId; }
     public String getClientId() { return clientId; }
-    public Double getMoneyAmount() { return moneyAmount; }
+    public Double getBigDecimal() { return BigDecimal; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

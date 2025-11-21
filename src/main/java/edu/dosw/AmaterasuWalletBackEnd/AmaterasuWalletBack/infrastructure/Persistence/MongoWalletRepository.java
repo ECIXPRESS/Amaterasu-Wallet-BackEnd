@@ -2,50 +2,45 @@ package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.infrastructure.Persi
 
 import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Domain.Model.Wallet;
 import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Domain.Port.WalletRepository;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
+@ConditionalOnProperty(name = "spring.data.mongodb.uri", matchIfMissing = true)
 public class MongoWalletRepository implements WalletRepository {
 
-    private final MongoTemplate mongoTemplate;
-
-    public MongoWalletRepository(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
+    private final Map<String, Wallet> wallets = new HashMap<>();
 
     @Override
     public Wallet save(Wallet wallet) {
-        return mongoTemplate.save(wallet);
+        wallets.put(wallet.getWalletId(), wallet);
+        return wallet;
     }
 
     @Override
     public Optional<Wallet> findByWalletId(String walletId) {
-        Query query = new Query(Criteria.where("walletId").is(walletId));
-        Wallet wallet = mongoTemplate.findOne(query, Wallet.class);
-        return Optional.ofNullable(wallet);
+        return Optional.ofNullable(wallets.get(walletId));
     }
 
     @Override
     public Optional<Wallet> findByClientId(String clientId) {
-        Query query = new Query(Criteria.where("clientId").is(clientId));
-        Wallet wallet = mongoTemplate.findOne(query, Wallet.class);
-        return Optional.ofNullable(wallet);
+        return wallets.values().stream()
+                .filter(wallet -> wallet.getClientId().equals(clientId))
+                .findFirst();
     }
 
     @Override
     public boolean existsByClientId(String clientId) {
-        Query query = new Query(Criteria.where("clientId").is(clientId));
-        return mongoTemplate.exists(query, Wallet.class);
+        return wallets.values().stream()
+                .anyMatch(wallet -> wallet.getClientId().equals(clientId));
     }
 
     @Override
     public void delete(String walletId) {
-        Query query = new Query(Criteria.where("walletId").is(walletId));
-        mongoTemplate.remove(query, Wallet.class);
+        wallets.remove(walletId);
     }
 }
