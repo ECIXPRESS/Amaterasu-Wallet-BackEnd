@@ -1,10 +1,10 @@
-name: CD - Deploy Wallet Backend (Dev)
+name: CD - Deploy Wallet Backend (Prod)
 
 on:
   push:
     branches:
-      - develop
-      # - 'feature/**'
+      - main
+      - 'feature/**'
 
 jobs:
   build-and-deploy:
@@ -40,11 +40,9 @@ jobs:
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:$GIT_TAG
 
-      - name: Deploy container to Azure Web App (DEV)
+      - name: Deploy container to Azure Web App (PROD)
         uses: azure/webapps-deploy@v3
         with:
-
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME_DEV }}
-
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME_PROD }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PROD }}
           images: ${{ secrets.ACR_LOGIN_SERVER }}/wallet-service:latest
