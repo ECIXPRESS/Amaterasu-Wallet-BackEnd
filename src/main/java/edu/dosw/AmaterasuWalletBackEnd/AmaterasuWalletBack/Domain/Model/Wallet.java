@@ -2,18 +2,24 @@ package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Domain.Model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "wallets")
+@Document(collection = "Wallets")
 public class Wallet {
 
     @Id
     private String walletId;
     private String clientId;
+    
+    @Field("moneyAmount") 
     private Double BigDecimal;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Wallet() {
+    }
 
 
     public Wallet(String walletId, String clientId, Double BigDecimal) {

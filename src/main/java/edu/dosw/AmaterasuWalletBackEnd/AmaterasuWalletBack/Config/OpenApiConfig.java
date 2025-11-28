@@ -31,12 +31,7 @@ public class OpenApiConfig {
                         .description("API REST para la gestión del monedero virtual de los usuarios en el sistema ECIEXPRESS. "
                                 + "Este microservicio administra el saldo del usuario, recargas, "
                                 + "movimientos financieros y validaciones de disponibilidad de fondos.")
-                        .version("1.0.0"))
-                .servers(List.of(
-                        new Server()
-                                .url("http://localhost:8080")
-                                .description("Servidor de Desarrollo Local")
-                ));
+                        .version("1.0.0"));
     }
 }
 
