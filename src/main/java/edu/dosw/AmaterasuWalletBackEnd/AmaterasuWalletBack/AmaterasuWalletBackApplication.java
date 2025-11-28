@@ -1,13 +1,13 @@
-package ECIEXPRESS.Amaterasu_Pagos.Wallet._BackEnd.Amaterasu_Pagos.Wallet._BackEnd;
+package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class AmaterasuWalletBackApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(AmaterasuWalletBackApplication.class, args);
 	}
 
 }
