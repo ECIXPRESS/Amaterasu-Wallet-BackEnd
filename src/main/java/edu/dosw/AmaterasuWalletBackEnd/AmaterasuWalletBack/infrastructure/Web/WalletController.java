@@ -1,67 +1,71 @@
 package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.infrastructure.Web;
 
-import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Application.*;
-import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Application.UseCase.*;
-import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Dto.WalletRequest;
-import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Dto.WalletResponse;
+import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Application.Ports.WalletUseCases;
+import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.infrastructure.Web.Dto.WalletRequests.*;
+import edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.infrastructure.Web.Dto.WalletResponses.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Wallet Management", description = "APIs for managing wallet operations")
 @RestController
-@RequestMapping("/api/wallets")
+@RequestMapping("/api/v1/wallets")
+@RequiredArgsConstructor
 public class WalletController {
 
-    private final CreateWalletUseCase createWalletUseCase;
-    private final AddMoneyUseCase addMoneyUseCase;
-    private final WithdrawMoneyUseCase withdrawMoneyUseCase;
-    private final GetWalletByClientIdUseCase getWalletByClientIdUseCase;
-    private final GetWalletByWalletIdUseCase getWalletByWalletIdUseCase;
+    private final WalletUseCases walletUseCases;
 
-    public WalletController(CreateWalletUseCase createWalletUseCase,
-                            AddMoneyUseCase addMoneyUseCase,
-                            WithdrawMoneyUseCase withdrawMoneyUseCase,
-                            GetWalletByClientIdUseCase getWalletByClientIdUseCase,
-                            GetWalletByWalletIdUseCase getWalletByWalletIdUseCase) {
-        this.createWalletUseCase = createWalletUseCase;
-        this.addMoneyUseCase = addMoneyUseCase;
-        this.withdrawMoneyUseCase = withdrawMoneyUseCase;
-        this.getWalletByClientIdUseCase = getWalletByClientIdUseCase;
-        this.getWalletByWalletIdUseCase = getWalletByWalletIdUseCase;
+    @Operation(summary = "Create a new wallet for a client")
+    @PostMapping
+    public ResponseEntity<Void> createWallet(@RequestBody CreateWalletRequest request) {
+        boolean isCreated = walletUseCases.createWallet(request);
+        return isCreated
+                ? ResponseEntity.status(HttpStatus.CREATED).build()
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @Operation(summary = "Crear una nueva billetera para un cliente")
-    @PostMapping("/create")
-    public ResponseEntity<WalletResponse> createWallet(@RequestBody WalletRequest request) {
-        WalletResponse response = createWalletUseCase.execute(request);
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(summary = "Agregar dinero al saldo de la billetera")
+    @Operation(summary = "Add money to wallet")
     @PostMapping("/add-money")
-    public ResponseEntity<WalletResponse> addMoney(@RequestBody WalletRequest request) {
-        WalletResponse response = addMoneyUseCase.execute(request);
+    public ResponseEntity<Void> addMoney(@RequestBody AddMoneyRequest request) {
+        boolean isAdded = walletUseCases.addMoney(request);
+        return isAdded
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @Operation(summary = "Make a payment using wallet")
+    @PostMapping("/pay")
+    public ResponseEntity<PayWithWalletResponse> payWithWallet(@RequestBody PayWithWalletRequest request) {
+        PayWithWalletResponse response = walletUseCases.payWithWallet(request);
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Retirar dinero del saldo de la billetera")
-    @PostMapping("/withdraw-money")
-    public ResponseEntity<WalletResponse> withdrawMoney(@RequestBody WalletRequest request) {
-        WalletResponse response = withdrawMoneyUseCase.execute(request);
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(summary = "Consultar billetera por ID del cliente")
+    @Operation(summary = "Get wallet by client ID")
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<WalletResponse> getWalletByClientId(@PathVariable String clientId) {
-        WalletResponse response = getWalletByClientIdUseCase.execute(clientId);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<GetWalletByClientIdResponse> getWalletByClientId(@PathVariable String clientId) {
+        GetWalletByClientIdRequest request = new GetWalletByClientIdRequest(clientId);
+        GetWalletByClientIdResponse response = walletUseCases.getWalletByClientId(request);
+        return response != null
+                ? ResponseEntity.ok(response)
+                : ResponseEntity.notFound().build();
     }
 
-    @Operation(summary = "Consultar billetera por ID de la billetera")
-    @GetMapping("/{walletId}")
-    public ResponseEntity<WalletResponse> getWalletByWalletId(@PathVariable String walletId) {
-        WalletResponse response = getWalletByWalletIdUseCase.execute(walletId);
-        return ResponseEntity.ok(response);
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An unexpected error occurred: " + ex.getMessage());
     }
 }
