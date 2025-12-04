@@ -44,13 +44,13 @@ class WalletRepositoryAdapterTest {
     @Test
     @DisplayName("Should save wallet successfully")
     void shouldSaveWalletSuccessfully() {
-        // Arrange
+      
         when(mongoRepository.save(any(WalletDocument.class))).thenReturn(walletDocument);
 
-        // Act
+    
         WalletRepositoryResponse response = walletRepositoryAdapter.save(wallet);
 
-        // Assert
+    
         assertNotNull(response);
         assertEquals("CLIENT123", response.clientId());
         assertEquals(1000.0, response.moneyAmount());
@@ -60,13 +60,11 @@ class WalletRepositoryAdapterTest {
     @Test
     @DisplayName("Should get wallet by client ID successfully")
     void shouldGetWalletByClientIdSuccessfully() throws Exception {
-        // Arrange
+    
         when(mongoRepository.findByClientId("CLIENT123")).thenReturn(walletDocument);
 
-        // Act
         WalletRepositoryResponse response = walletRepositoryAdapter.getByClientId("CLIENT123");
 
-        // Assert
         assertNotNull(response);
         assertEquals("WAL_12345678", response.walletId());
         assertEquals("CLIENT123", response.clientId());
@@ -77,10 +75,10 @@ class WalletRepositoryAdapterTest {
     @Test
     @DisplayName("Should throw exception when wallet not found by client ID")
     void shouldThrowExceptionWhenWalletNotFoundByClientId() {
-        // Arrange
+       
         when(mongoRepository.findByClientId("CLIENT999")).thenReturn(null);
 
-        // Act & Assert
+       
         Exception exception = assertThrows(Exception.class, () -> {
             walletRepositoryAdapter.getByClientId("CLIENT999");
         });
@@ -92,14 +90,14 @@ class WalletRepositoryAdapterTest {
     @Test
     @DisplayName("Should delete wallet successfully")
     void shouldDeleteWalletSuccessfully() throws Exception {
-        // Arrange
+   
         when(mongoRepository.findByClientId("CLIENT123")).thenReturn(walletDocument);
         doNothing().when(mongoRepository).delete(any(WalletDocument.class));
 
-        // Act
+     
         walletRepositoryAdapter.delete("CLIENT123");
 
-        // Assert
+      
         verify(mongoRepository, times(1)).findByClientId("CLIENT123");
         verify(mongoRepository, times(1)).delete(walletDocument);
     }
@@ -107,10 +105,10 @@ class WalletRepositoryAdapterTest {
     @Test
     @DisplayName("Should throw exception when deleting non-existent wallet")
     void shouldThrowExceptionWhenDeletingNonExistentWallet() {
-        // Arrange
+       
         when(mongoRepository.findByClientId("CLIENT999")).thenReturn(null);
 
-        // Act & Assert
+     
         Exception exception = assertThrows(Exception.class, () -> {
             walletRepositoryAdapter.delete("CLIENT999");
         });

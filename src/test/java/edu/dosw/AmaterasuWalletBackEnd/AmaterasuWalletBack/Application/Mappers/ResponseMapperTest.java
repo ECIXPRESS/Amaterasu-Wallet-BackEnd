@@ -12,7 +12,7 @@ class ResponseMapperTest {
     @Test
     @DisplayName("Should map WalletRepositoryResponse to Wallet correctly")
     void shouldMapWalletRepositoryResponseToWallet() {
-        // Arrange
+
         WalletRepositoryResponse response = new WalletRepositoryResponse(
             "WAL_12345678",
             "CLIENT123",
@@ -20,10 +20,10 @@ class ResponseMapperTest {
             "2025-01-01T10:00:00.000Z"
         );
 
-        // Act
+
         Wallet wallet = ResponseMapper.responseToWallet(response);
 
-        // Assert
+ 
         assertNotNull(wallet);
         assertEquals("WAL_12345678", wallet.getWalletId());
         assertEquals("CLIENT123", wallet.getClientId());
@@ -34,7 +34,7 @@ class ResponseMapperTest {
     @Test
     @DisplayName("Should handle null values in response")
     void shouldHandleNullValuesInResponse() {
-        // Arrange
+   
         WalletRepositoryResponse response = new WalletRepositoryResponse(
             null,
             null,
@@ -42,10 +42,10 @@ class ResponseMapperTest {
             null
         );
 
-        // Act
+  
         Wallet wallet = ResponseMapper.responseToWallet(response);
 
-        // Assert
+    
         assertNotNull(wallet);
         assertNull(wallet.getWalletId());
         assertNull(wallet.getClientId());

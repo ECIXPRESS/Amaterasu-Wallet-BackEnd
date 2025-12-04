@@ -33,11 +33,11 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should create wallet and return 201")
     void shouldCreateWalletAndReturn201() throws Exception {
-        // Arrange
+     
         CreateWalletRequest request = new CreateWalletRequest("CLIENT123", 1000.0);
         when(walletUseCases.createWallet(any())).thenReturn(true);
 
-        // Act & Assert
+      
         mockMvc.perform(post("/api/v1/wallets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -47,11 +47,11 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should return 500 when create wallet fails")
     void shouldReturn500WhenCreateWalletFails() throws Exception {
-        // Arrange
+    
         CreateWalletRequest request = new CreateWalletRequest("CLIENT123", 1000.0);
         when(walletUseCases.createWallet(any())).thenReturn(false);
 
-        // Act & Assert
+        
         mockMvc.perform(post("/api/v1/wallets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -61,11 +61,11 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should add money and return 200")
     void shouldAddMoneyAndReturn200() throws Exception {
-        // Arrange
+       
         AddMoneyRequest request = new AddMoneyRequest("CLIENT123", 500.0);
         when(walletUseCases.addMoney(any())).thenReturn(true);
 
-        // Act & Assert
+        
         mockMvc.perform(post("/api/v1/wallets/add-money")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -75,11 +75,11 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should return 500 when add money fails")
     void shouldReturn500WhenAddMoneyFails() throws Exception {
-        // Arrange
+        
         AddMoneyRequest request = new AddMoneyRequest("CLIENT123", 500.0);
         when(walletUseCases.addMoney(any())).thenReturn(false);
 
-        // Act & Assert
+        
         mockMvc.perform(post("/api/v1/wallets/add-money")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -89,12 +89,12 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should pay with wallet and return 200")
     void shouldPayWithWalletAndReturn200() throws Exception {
-        // Arrange
+    
         PayWithWalletRequest request = new PayWithWalletRequest("CLIENT123", 300.0);
         PayWithWalletResponse response = new PayWithWalletResponse(PaymentStatus.COMPLETED);
         when(walletUseCases.payWithWallet(any())).thenReturn(response);
 
-        // Act & Assert
+       
         mockMvc.perform(post("/api/v1/wallets/pay")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -105,7 +105,7 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should get wallet by client ID and return 200")
     void shouldGetWalletByClientIdAndReturn200() throws Exception {
-        // Arrange
+     
         GetWalletByClientIdResponse response = new GetWalletByClientIdResponse(
             "WAL_123",
             "CLIENT123",
@@ -114,7 +114,7 @@ class WalletControllerTest {
         );
         when(walletUseCases.getWalletByClientId(any())).thenReturn(response);
 
-        // Act & Assert
+      
         mockMvc.perform(get("/api/v1/wallets/client/CLIENT123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.walletId").value("WAL_123"))
@@ -125,10 +125,10 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should return 404 when wallet not found")
     void shouldReturn404WhenWalletNotFound() throws Exception {
-        // Arrange
+       
         when(walletUseCases.getWalletByClientId(any())).thenReturn(null);
 
-        // Act & Assert
+      
         mockMvc.perform(get("/api/v1/wallets/client/CLIENT999"))
                 .andExpect(status().isNotFound());
     }
@@ -136,12 +136,12 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should handle IllegalArgumentException and return 400")
     void shouldHandleIllegalArgumentExceptionAndReturn400() throws Exception {
-        // Arrange
+        
         CreateWalletRequest request = new CreateWalletRequest("", 1000.0);
         when(walletUseCases.createWallet(any()))
             .thenThrow(new IllegalArgumentException("ClientId es requerido"));
 
-        // Act & Assert
+      
         mockMvc.perform(post("/api/v1/wallets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -152,12 +152,12 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should handle IllegalStateException and return 400")
     void shouldHandleIllegalStateExceptionAndReturn400() throws Exception {
-        // Arrange
+      
         PayWithWalletRequest request = new PayWithWalletRequest("CLIENT123", 2000.0);
         when(walletUseCases.payWithWallet(any()))
             .thenThrow(new IllegalStateException("Fondos insuficientes"));
 
-        // Act & Assert
+     
         mockMvc.perform(post("/api/v1/wallets/pay")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -168,12 +168,12 @@ class WalletControllerTest {
     @Test
     @DisplayName("Should handle generic Exception and return 500")
     void shouldHandleGenericExceptionAndReturn500() throws Exception {
-        // Arrange
+        
         CreateWalletRequest request = new CreateWalletRequest("CLIENT123", 1000.0);
         when(walletUseCases.createWallet(any()))
             .thenThrow(new RuntimeException("Unexpected error"));
 
-        // Act & Assert
+        
         mockMvc.perform(post("/api/v1/wallets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
