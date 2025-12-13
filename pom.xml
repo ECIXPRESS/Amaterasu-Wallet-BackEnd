@@ -53,16 +53,26 @@
             **/Config/**,
             **/configuration/**,
             **/dto/**,
+            **/Dto/**,
             **/model/**,
+            **/Model/**,
             **/entity/**,
             **/entities/**,
             **/exception/**,
             **/exceptions/**,
+            **/Exception/**,
             **/*Application.java,
-            **/*Wallet*.java,
+            **/*Application*.java,
             **/*Configuration.java,
             **/*Config.java,
-            **/OpenApiConfig.java
+            **/OpenApiConfig.java,
+            **/RepositoryRequests/**,
+            **/RepositoryResponses/**,
+            **/WalletRequests/**,
+            **/WalletResponses/**,
+            **/*Request.java,
+            **/*Response.java,
+            **/*Document.java
         </sonar.coverage.exclusions>
 
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -210,6 +220,15 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
+                <configuration>
+                    
+                    <excludes>
+                        <exclude>**/Config/**</exclude>
+                        <exclude>**/Exception/**</exclude>
+                        <exclude>**/RepositoryRequests/**</exclude>
+                        <exclude>**/AmaterasuWalletBackApplication.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -225,19 +244,7 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>**/config/**</exclude>
-                                <exclude>**/Config/**</exclude>
-                                <exclude>**/configuration/**</exclude>
-                                <exclude>**/dto/**</exclude>
-                                <exclude>**/model/**</exclude>
-                                <exclude>**/entity/**</exclude>
-                                <exclude>**/entities/**</exclude>
-                                <exclude>**/exception/**</exclude>
-                                <exclude>**/exceptions/**</exclude>
-                                <exclude>**/*Application*.class</exclude>
-                                <exclude>**/*Configuration.class</exclude>
-                                <exclude>**/*Config.class</exclude>
-                                <exclude>**/*$Builder.class</exclude>
+
                             </excludes>
                         </configuration>
                     </execution>
@@ -253,15 +260,28 @@
                                 <exclude>**/Config/**</exclude>
                                 <exclude>**/configuration/**</exclude>
                                 <exclude>**/dto/**</exclude>
+                                <exclude>**/Dto/**</exclude>
                                 <exclude>**/model/**</exclude>
+                                <exclude>**/Model/**</exclude>
                                 <exclude>**/entity/**</exclude>
                                 <exclude>**/entities/**</exclude>
                                 <exclude>**/exception/**</exclude>
                                 <exclude>**/exceptions/**</exclude>
+                                <exclude>**/Exception/**</exclude>
                                 <exclude>**/*Application*.class</exclude>
                                 <exclude>**/*Configuration.class</exclude>
                                 <exclude>**/*Config.class</exclude>
                                 <exclude>**/*$Builder.class</exclude>
+                                <exclude>**/RepositoryRequests/**</exclude>
+                                <exclude>**/RepositoryResponses/**</exclude>
+                                <exclude>**/WalletRequests/**</exclude>
+                                <exclude>**/WalletResponses/**</exclude>
+                                <exclude>**/*Request.class</exclude>
+                                <exclude>**/*Response.class</exclude>
+                                <exclude>**/*Document.class</exclude>
+                                <exclude>**/CustomExceptions.class</exclude>
+                                <exclude>**/CustomExceptions$*.class</exclude>
+                                <exclude>**/GlobalExceptionHandler.class</exclude>
                             </excludes>
                             <rules>
                                 <rule>

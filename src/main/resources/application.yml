@@ -7,14 +7,14 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/Wallet-db}
+      uri: ${MONGODB_URI:mongodb+srv://manuelguarnizog_db_user:slmEouXGl5LaTDbg@clustereciexpress.m7ljcsf.mongodb.net/?appName=ClusterECIEXPRESS}
       database: Wallet-db
 
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-
+# Configuración de Swagger/OpenAPI
 springdoc:
   api-docs:
     path: /api-docs
@@ -39,3 +39,9 @@ springdoc:
     title: Wallet Service API
     version: 1.0.0
     description: API para la gestión del monedero virtual de los usuarios en ECIEXPRESS
+
+logging:
+  level:
+    org.springframework.data.mongodb: INFO
+    org.springdoc: INFO
+    ECIEXPRESS.AmaterasuPagos.Wallet._BackEnd: DEBUG
