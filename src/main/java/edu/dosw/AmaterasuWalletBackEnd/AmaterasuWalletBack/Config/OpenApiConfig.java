@@ -2,8 +2,10 @@ package edu.dosw.AmaterasuWalletBackEnd.AmaterasuWalletBack.Config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
 /**
  * Configuración de OpenAPI/Swagger para el microservicio Wallet.
@@ -28,7 +30,12 @@ public class OpenApiConfig {
                         .description("API REST para la gestión del monedero virtual de los usuarios en el sistema ECIEXPRESS. "
                                 + "Este microservicio administra el saldo del usuario, recargas, "
                                 + "movimientos financieros y validaciones de disponibilidad de fondos.")
-                        .version("1.0.0"));
+                        .version("1.0.0")).
+                servers(List.of(
+                        new Server()
+                                .url("http://localhost:8083")
+                                .description("Servidor de Desarrollo")
+                ));
     }
 }
 
